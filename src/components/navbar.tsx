@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/sheet";
 import {
   AlertTriangle,
+  LayoutDashboard,
   LogOut,
   MapPin,
   Menu,
@@ -50,6 +51,12 @@ export function Navbar() {
       icon: <Shield className="w-4 h-4 mr-2" />,
     },
     {
+      name: "Painel",
+      href: "/dashboard",
+      icon: <LayoutDashboard className="w-4 h-4 mr-2" />,
+      requiresAuth: true,
+    },
+    {
       name: "Mapa",
       href: "/map",
       icon: <MapPin className="w-4 h-4 mr-2" />,
@@ -61,9 +68,10 @@ export function Navbar() {
       requiresAuth: true,
     },
     {
-      name: "Denúncias",
+      name: "Minhas Denúncias",
       href: "/reports",
       icon: <AlertTriangle className="w-4 h-4 mr-2" />,
+      requiresAuth: true,
     },
   ];
   
