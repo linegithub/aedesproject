@@ -29,6 +29,7 @@ import {
 const formSchema = z.object({
   address: z.string().min(5, { message: "Endereço muito curto" }),
   description: z.string().min(10, { message: "Forneça mais detalhes" }),
+  // Removendo a validação da imagem para torná-la realmente opcional
   image: z.any().optional(),
 });
 
@@ -44,6 +45,7 @@ export function ReportForm() {
     defaultValues: {
       address: "",
       description: "",
+      image: undefined,
     },
   });
 

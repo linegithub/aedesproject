@@ -25,7 +25,6 @@ import {
   LogOut,
   MapPin,
   Menu,
-  Plus,
   Shield,
   User,
 } from "lucide-react";
@@ -51,20 +50,14 @@ export function Navbar() {
       icon: <Shield className="w-4 h-4 mr-2" />,
     },
     {
-      name: "Painel",
-      href: "/dashboard",
-      icon: <LayoutDashboard className="w-4 h-4 mr-2" />,
-      requiresAuth: true,
-    },
-    {
       name: "Mapa",
       href: "/map",
       icon: <MapPin className="w-4 h-4 mr-2" />,
     },
     {
-      name: "Nova Denúncia",
-      href: "/reports/new",
-      icon: <Plus className="w-4 h-4 mr-2" />,
+      name: "Painel",
+      href: "/dashboard",
+      icon: <LayoutDashboard className="w-4 h-4 mr-2" />,
       requiresAuth: true,
     },
     {
@@ -101,6 +94,16 @@ export function Navbar() {
               </Link>
             );
           })}
+          
+          {isAuthenticated && (
+            <button
+              onClick={handleLogout}
+              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground flex items-center"
+            >
+              <LogOut className="w-4 h-4 mr-2" />
+              Sair
+            </button>
+          )}
         </nav>
         
         <div className="flex items-center gap-2">
@@ -150,7 +153,7 @@ export function Navbar() {
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link to="/reports/new" className="w-full cursor-pointer">
-                    <Plus className="mr-2 h-4 w-4" />
+                    <AlertTriangle className="mr-2 h-4 w-4" />
                     <span>Nova Denúncia</span>
                   </Link>
                 </DropdownMenuItem>
