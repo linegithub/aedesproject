@@ -1,4 +1,3 @@
-
 import { Link } from "react-router-dom";
 import { Shield } from "lucide-react";
 
@@ -10,7 +9,7 @@ export function Footer() {
           <div className="space-y-4">
             <Link to="/" className="flex items-center gap-2">
               <Shield className="h-6 w-6 text-primary" />
-              <span className="font-bold text-xl">Alerta Mosquito</span>
+              <span className="font-bold text-xl">Alerta Aedes</span>
             </Link>
             <p className="text-sm text-muted-foreground">
               Sistema de monitoramento colaborativo contra o Aedes Aegypti.
@@ -84,7 +83,7 @@ export function Footer() {
         
         <div className="mt-8 border-t pt-6 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-xs text-muted-foreground">
-            &copy; {new Date().getFullYear()} Alerta Mosquito. Todos os direitos reservados.
+            &copy; {new Date().getFullYear()} Alerta Aedes. Todos os direitos reservados.
           </p>
           
           <div className="flex items-center space-x-4">
