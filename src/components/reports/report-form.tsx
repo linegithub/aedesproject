@@ -221,7 +221,7 @@ export function ReportForm() {
                           </Button>
                         </div>
                       ) : (
-                        <div className="flex flex-col items-center justify-center w-full h-32 bg-muted rounded-md border-2 border-dashed border-muted-foreground/50 p-4">
+                        <div className="flex flex-col items-center justify-center w-full h-32 bg-muted rounded-md border-2 border-dashed border-muted-foreground/50 p-4 relative">
                           <Upload className="h-8 w-8 text-muted-foreground mb-2" />
                           <p className="text-sm text-muted-foreground text-center">
                             Arraste uma imagem ou clique para selecionar
@@ -229,8 +229,9 @@ export function ReportForm() {
                           <input
                             type="file"
                             accept="image/*"
-                            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                             onChange={handleImageChange}
+                            onClick={(e) => e.stopPropagation()}
                           />
                         </div>
                       )}
