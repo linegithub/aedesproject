@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { useAuth } from "@/hooks/use-auth";
 import { logout } from "@/services/auth-service";
+import { useIsMobile } from "@/hooks/use-mobile";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -32,6 +33,7 @@ import {
 export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { user, isAuthenticated } = useAuth();
+  const isMobile = useIsMobile();
   const navigate = useNavigate();
   
   const handleLogout = () => {
@@ -59,12 +61,14 @@ export function Navbar() {
       href: "/dashboard",
       icon: <LayoutDashboard className="w-4 h-4 mr-2" />,
       requiresAuth: true,
+      mobileHidden: true,
     },
     {
       name: "Minhas Denúncias",
       href: "/reports",
       icon: <AlertTriangle className="w-4 h-4 mr-2" />,
       requiresAuth: true,
+      mobileHidden: true,
     },
   ];
   
@@ -81,6 +85,10 @@ export function Navbar() {
         <nav className="hidden md:flex items-center gap-6">
           {navigationItems.map((item) => {
             if (item.requiresAuth && !isAuthenticated) {
+              return null;
+            }
+            
+            if (isMobile && item.mobileHidden) {
               return null;
             }
             
@@ -191,6 +199,10 @@ export function Navbar() {
               <nav className="flex flex-col gap-4">
                 {navigationItems.map((item) => {
                   if (item.requiresAuth && !isAuthenticated) {
+                    return null;
+                  }
+                  
+                  if (isMobile && item.mobileHidden) {
                     return null;
                   }
                   
