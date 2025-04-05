@@ -5,7 +5,7 @@ import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Calendar } from "@/components/ui/calendar";
-import { Search } from "lucide-react";
+import { Search, Download, FileJson, FileCsv } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { format } from "date-fns";
@@ -55,6 +55,77 @@ const PublicDataPage = () => {
     setSearchTerm("");
     setSelectedDate(undefined);
     setReports(getAllReports());
+  };
+
+  // Function to download data as JSON
+  const downloadAsJSON = () => {
+    // Prepare data for export - removing sensitive information
+    const exportData = reports.map(report => ({
+      id: report.id,
+      location: {
+        lat: report.location.lat,
+        lng: report.location.lng,
+        address: report.location.address
+      },
+      description: report.description,
+      status: report.status,
+      createdAt: format(new Date(report.createdAt), "yyyy-MM-dd")
+    }));
+
+    const jsonString = JSON.stringify(exportData, null, 2);
+    const blob = new Blob([jsonString], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `dados-dengue-${format(new Date(), "yyyy-MM-dd")}.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
+  // Function to download data as CSV
+  const downloadAsCSV = () => {
+    // Prepare data for export - removing sensitive information
+    const exportData = reports.map(report => ({
+      id: report.id,
+      latitude: report.location.lat,
+      longitude: report.location.lng,
+      endereco: report.location.address,
+      descricao: report.description,
+      status: report.status === "pending" ? "Pendente" : report.status === "verified" ? "Verificado" : "Eliminado",
+      data: format(new Date(report.createdAt), "dd/MM/yyyy")
+    }));
+
+    // Create CSV headers
+    const headers = ["ID", "Latitude", "Longitude", "Endereço", "Descrição", "Status", "Data"];
+    
+    // Create CSV rows
+    const csvRows = [
+      headers.join(","),
+      ...exportData.map(row => [
+        row.id,
+        row.latitude,
+        row.longitude,
+        `"${row.endereco.replace(/"/g, '""')}"`,
+        `"${row.descricao.replace(/"/g, '""')}"`,
+        row.status,
+        row.data
+      ].join(","))
+    ];
+
+    const csvString = csvRows.join("\n");
+    const blob = new Blob([csvString], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `dados-dengue-${format(new Date(), "yyyy-MM-dd")}.csv`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   };
 
   return (
@@ -114,8 +185,18 @@ const PublicDataPage = () => {
         </Card>
 
         <Card>
-          <CardHeader>
+          <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle className="text-xl">Resultados ({reports.length})</CardTitle>
+            <div className="flex space-x-2">
+              <Button variant="outline" size="sm" onClick={downloadAsCSV}>
+                <FileCsv className="mr-2 h-4 w-4" />
+                CSV
+              </Button>
+              <Button variant="outline" size="sm" onClick={downloadAsJSON}>
+                <FileJson className="mr-2 h-4 w-4" />
+                JSON
+              </Button>
+            </div>
           </CardHeader>
           <CardContent>
             <div className="rounded-md border">
