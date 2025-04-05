@@ -21,7 +21,7 @@ const NewReportPage = () => {
   }
   
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen" onClick={(e) => e.stopPropagation()}>
       <Navbar />
       
       <main className="flex-1 container py-8">
