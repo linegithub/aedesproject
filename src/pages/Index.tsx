@@ -1,10 +1,9 @@
-
 import { Link } from "react-router-dom";
 import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
-import { Shield, AlertTriangle, MapPin, Database, ChevronRight } from "lucide-react";
+import { Shield, AlertTriangle, MapPin, Database, ChevronRight, AlertCircle } from "lucide-react";
 
 const Index = () => {
   const { isAuthenticated } = useAuth();
@@ -170,19 +169,19 @@ const Index = () => {
                 </div>
                 <ul className="grid gap-2">
                   <li className="flex items-center gap-2">
-                    <Bug className="h-4 w-4 text-primary" />
+                    <AlertCircle className="h-4 w-4 text-primary" />
                     <span>Mosquito de hábitos diurnos</span>
                   </li>
                   <li className="flex items-center gap-2">
-                    <Bug className="h-4 w-4 text-primary" />
+                    <AlertCircle className="h-4 w-4 text-primary" />
                     <span>Pica principalmente no início da manhã e fim da tarde</span>
                   </li>
                   <li className="flex items-center gap-2">
-                    <Bug className="h-4 w-4 text-primary" />
+                    <AlertCircle className="h-4 w-4 text-primary" />
                     <span>Desenvolve-se em água parada e limpa</span>
                   </li>
                   <li className="flex items-center gap-2">
-                    <Bug className="h-4 w-4 text-primary" />
+                    <AlertCircle className="h-4 w-4 text-primary" />
                     <span>Do ovo à fase adulta leva de 7 a 10 dias</span>
                   </li>
                 </ul>
