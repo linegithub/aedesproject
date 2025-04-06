@@ -19,10 +19,10 @@ interface ReportCardProps {
 export function ReportCard({ report, id, location, description, status, date, onClick }: ReportCardProps) {
   // Use report data if provided, otherwise use individual props
   const reportId = report?.id || id;
-  const reportLocation = report?.location.address || location;
+  const reportLocation = report?.location?.address || location;
   const reportDescription = report?.description || description;
   const reportStatus = report?.status || status;
-  const reportDate = report?.createdAt ? format(report.createdAt, "PPP", { locale: ptBR }) : date;
+  const reportDate = report?.createdAt ? format(new Date(report.createdAt), "PPP", { locale: ptBR }) : date;
   const reportUserName = report?.userName;
   const reportImageUrl = report?.imageUrl;
 

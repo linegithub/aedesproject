@@ -1,8 +1,6 @@
 
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { format } from "date-fns";
-import { ptBR } from "date-fns/locale";
 import { ReportCard } from "@/components/reports/report-card";
 import { getAllReports, MosquitoReport } from "@/services/report-service";
 

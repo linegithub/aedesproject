@@ -163,7 +163,7 @@ const ReportDetailPage = () => {
                     </div>
                   </div>
                   <div className="absolute bottom-4 left-4 bg-background/90 p-2 rounded text-sm">
-                    {report.location.address}
+                    {report.location?.address || "Endereço não disponível"}
                   </div>
                 </div>
               </CardContent>
@@ -171,7 +171,7 @@ const ReportDetailPage = () => {
                 <div className="flex items-center space-x-2">
                   <MapPin className="h-4 w-4" />
                   <span>
-                    Coordenadas: {report.location.lat.toFixed(6)}, {report.location.lng.toFixed(6)}
+                    Coordenadas: {report.location?.lat.toFixed(6) || "N/A"}, {report.location?.lng.toFixed(6) || "N/A"}
                   </span>
                 </div>
               </CardFooter>
@@ -199,7 +199,7 @@ const ReportDetailPage = () => {
                   <h3 className="text-sm font-medium text-muted-foreground mb-1">Autoria</h3>
                   <div className="flex items-center">
                     <User className="mr-2 h-4 w-4 text-muted-foreground" />
-                    <span>{report.userName}</span>
+                    <span>{report.userName || "Anônimo"}</span>
                   </div>
                 </div>
                 
@@ -209,7 +209,7 @@ const ReportDetailPage = () => {
                   <h3 className="text-sm font-medium text-muted-foreground mb-1">Data do Registro</h3>
                   <div className="flex items-center">
                     <Calendar className="mr-2 h-4 w-4 text-muted-foreground" />
-                    <span>{format(report.createdAt, "PPP 'às' HH:mm", { locale: ptBR })}</span>
+                    <span>{format(new Date(report.createdAt), "PPP 'às' HH:mm", { locale: ptBR })}</span>
                   </div>
                 </div>
                 
