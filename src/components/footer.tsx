@@ -1,4 +1,3 @@
-
 import { Link } from "react-router-dom";
 import { Shield, Database } from "lucide-react";
 
@@ -57,9 +56,8 @@ export function Footer() {
               >
                 OMS
               </a>
-              <Link to="/public-data" className="flex items-center gap-1 text-muted-foreground hover:text-foreground">
-                <Database className="h-3.5 w-3.5" />
-                <span>Dados para Pesquisa</span>
+              <Link to="/public-data" className="text-muted-foreground hover:text-foreground">
+                Dados Públicos
               </Link>
             </nav>
           </div>

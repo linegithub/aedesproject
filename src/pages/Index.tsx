@@ -4,7 +4,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
-import { Shield, AlertTriangle, MapPin, Bug, ChevronRight } from "lucide-react";
+import { Shield, AlertTriangle, MapPin, Database, ChevronRight } from "lucide-react";
 
 const Index = () => {
   const { isAuthenticated } = useAuth();
@@ -54,6 +54,11 @@ const Index = () => {
                 <Button size="lg" variant="outline" asChild>
                   <Link to="/map">
                     Ver Mapa <MapPin className="ml-2 h-4 w-4" />
+                  </Link>
+                </Button>
+                <Button size="lg" variant="outline" asChild>
+                  <Link to="/public-data">
+                    Dados Abertos <Database className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>
               </div>
