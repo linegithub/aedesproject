@@ -1,11 +1,10 @@
-
 import { useState } from "react";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Calendar } from "@/components/ui/calendar";
-import { Search, Download, FileJson, FileCsv } from "lucide-react";
+import { Search, Download, FileJson, Files } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { format } from "date-fns";
@@ -189,7 +188,7 @@ const PublicDataPage = () => {
             <CardTitle className="text-xl">Resultados ({reports.length})</CardTitle>
             <div className="flex space-x-2">
               <Button variant="outline" size="sm" onClick={downloadAsCSV}>
-                <FileCsv className="mr-2 h-4 w-4" />
+                <Files className="mr-2 h-4 w-4" />
                 CSV
               </Button>
               <Button variant="outline" size="sm" onClick={downloadAsJSON}>
