@@ -1,5 +1,5 @@
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "@/hooks/use-auth";
 import { Navbar } from "@/components/navbar";
@@ -14,10 +14,14 @@ import {
 import { Button } from "@/components/ui/button";
 import { AlertTriangle, MapPin, Plus } from "lucide-react";
 import { ReportsList } from "@/components/reports/reports-list";
+import { ReportsSearch } from "@/components/reports/reports-search";
 import { Link } from "react-router-dom";
+import { getAllReports, MosquitoReport } from "@/services/report-service";
 
 const DashboardPage = () => {
   const { user, isAuthenticated, loading } = useAuth();
+  const [filteredReports, setFilteredReports] = useState<MosquitoReport[]>([]);
+  const [hasFiltered, setHasFiltered] = useState(false);
   
   useEffect(() => {
     // Scroll to top on page load
@@ -35,6 +39,33 @@ const DashboardPage = () => {
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
+
+  const handleSearch = (searchTerm: string, selectedDate: Date | undefined) => {
+    const allReports = getAllReports();
+    let filtered = allReports;
+
+    // Filter by description
+    if (searchTerm) {
+      filtered = filtered.filter(report => 
+        report.description.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
+    // Filter by date
+    if (selectedDate) {
+      filtered = filtered.filter(report => {
+        const reportDate = new Date(report.createdAt);
+        return (
+          reportDate.getDate() === selectedDate.getDate() &&
+          reportDate.getMonth() === selectedDate.getMonth() &&
+          reportDate.getFullYear() === selectedDate.getFullYear()
+        );
+      });
+    }
+
+    setFilteredReports(filtered);
+    setHasFiltered(searchTerm !== "" || selectedDate !== undefined);
+  };
   
   return (
     <div className="flex flex-col min-h-screen">
@@ -130,7 +161,8 @@ const DashboardPage = () => {
         <div className="space-y-6">
           <div>
             <h2 className="text-2xl font-bold tracking-tight mb-4">Denúncias Recentes</h2>
-            <ReportsList />
+            <ReportsSearch onSearch={handleSearch} />
+            <ReportsList reports={hasFiltered ? filteredReports : undefined} />
           </div>
         </div>
       </main>

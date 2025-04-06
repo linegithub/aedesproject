@@ -1,10 +1,8 @@
+
 import { Link } from "react-router-dom";
 import { Shield, Database } from "lucide-react";
-import { useIsMobile } from "@/hooks/use-mobile";
 
 export function Footer() {
-  const isMobile = useIsMobile();
-
   return (
     <footer className="w-full border-t bg-background">
       <div className="container py-8 md:py-12">
@@ -29,16 +27,6 @@ export function Footer() {
               <Link to="/map" className="text-muted-foreground hover:text-foreground">
                 Mapa
               </Link>
-              {!isMobile && (
-                <>
-                  <Link to="/reports" className="text-muted-foreground hover:text-foreground">
-                    Denúncias
-                  </Link>
-                  <Link to="/reports/new" className="text-muted-foreground hover:text-foreground">
-                    Nova Denúncia
-                  </Link>
-                </>
-              )}
             </nav>
           </div>
           
