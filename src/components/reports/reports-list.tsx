@@ -40,16 +40,11 @@ export function ReportsList({ reports: propReports }: ReportsListProps) {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {reports.map((report) => (
-        <ReportCard 
-          key={report.id} 
-          id={report.id}
-          location={report.location.address}
-          description={report.description}
-          status={report.status}
-          date={format(new Date(report.createdAt), "dd 'de' MMMM 'de' yyyy", { locale: ptBR })}
-        />
+        <Link to={`/reports/${report.id}`} key={report.id}>
+          <ReportCard report={report} />
+        </Link>
       ))}
     </div>
   );

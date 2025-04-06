@@ -111,7 +111,7 @@ const ReportDetailPage = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left column - Image and map */}
           <div className="lg:col-span-2 space-y-6">
-            {report.imageUrl ? (
+            {report && report.imageUrl ? (
               <Card>
                 <CardHeader>
                   <CardTitle>Imagem do Foco</CardTitle>
