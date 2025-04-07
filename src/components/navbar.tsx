@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -101,20 +100,8 @@ export function Navbar() {
         </nav>
         
         <div className="flex items-center gap-2">
-          <ThemeToggle />
-          
           {isAuthenticated ? (
             <div className="flex items-center gap-2">
-              <Button 
-                variant="outline" 
-                size="sm"
-                onClick={handleLogout}
-                className="gap-1"
-              >
-                <LogOut className="h-4 w-4" />
-                <span className="hidden sm:inline">Sair</span>
-              </Button>
-              
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="relative h-8 w-8 rounded-full">
@@ -168,11 +155,26 @@ export function Navbar() {
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
+
+              <ThemeToggle />
+              
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={handleLogout}
+                className="gap-1"
+              >
+                <LogOut className="h-4 w-4" />
+                <span className="hidden sm:inline">Sair</span>
+              </Button>
             </div>
           ) : (
-            <Button variant="default" size="sm" asChild>
-              <Link to="/login">Entrar</Link>
-            </Button>
+            <div className="flex items-center gap-2">
+              <ThemeToggle />
+              <Button variant="default" size="sm" asChild>
+                <Link to="/login">Entrar</Link>
+              </Button>
+            </div>
           )}
           
           <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
