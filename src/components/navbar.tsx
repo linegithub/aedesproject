@@ -96,79 +96,81 @@ export function Navbar() {
               </Link>
             );
           })}
-          
-          {isAuthenticated && (
-            <button
-              onClick={handleLogout}
-              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground flex items-center"
-            >
-              <LogOut className="w-4 h-4 mr-2" />
-              Sair
-            </button>
-          )}
         </nav>
         
         <div className="flex items-center gap-2">
           <ThemeToggle />
           
           {isAuthenticated ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-muted overflow-hidden">
-                    {user?.avatar ? (
-                      <img
-                        src={user.avatar}
-                        alt={user.name}
-                        className="h-8 w-8 object-cover"
-                      />
-                    ) : (
-                      <User className="h-4 w-4" />
-                    )}
+            <div className="flex items-center gap-2">
+              <Button 
+                variant="destructive" 
+                size="sm" 
+                onClick={handleLogout}
+                className="hidden md:flex items-center gap-1"
+              >
+                <LogOut className="h-4 w-4 mr-1" />
+                Sair
+              </Button>
+            
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-muted overflow-hidden">
+                      {user?.avatar ? (
+                        <img
+                          src={user.avatar}
+                          alt={user.name}
+                          className="h-8 w-8 object-cover"
+                        />
+                      ) : (
+                        <User className="h-4 w-4" />
+                      )}
+                    </div>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56">
+                  <div className="flex items-center justify-start gap-2 p-2">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-muted overflow-hidden">
+                      {user?.avatar ? (
+                        <img
+                          src={user.avatar}
+                          alt={user.name}
+                          className="h-8 w-8 object-cover"
+                        />
+                      ) : (
+                        <User className="h-4 w-4" />
+                      )}
+                    </div>
+                    <div className="flex flex-col space-y-1 leading-none">
+                      <p className="font-medium">{user?.name}</p>
+                      <p className="text-xs text-muted-foreground">{user?.email}</p>
+                    </div>
                   </div>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56">
-                <div className="flex items-center justify-start gap-2 p-2">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-muted overflow-hidden">
-                    {user?.avatar ? (
-                      <img
-                        src={user.avatar}
-                        alt={user.name}
-                        className="h-8 w-8 object-cover"
-                      />
-                    ) : (
-                      <User className="h-4 w-4" />
-                    )}
-                  </div>
-                  <div className="flex flex-col space-y-1 leading-none">
-                    <p className="font-medium">{user?.name}</p>
-                    <p className="text-xs text-muted-foreground">{user?.email}</p>
-                  </div>
-                </div>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem asChild>
-                  <Link to="/reports" className="w-full cursor-pointer">
-                    <AlertTriangle className="mr-2 h-4 w-4" />
-                    <span>Minhas Denúncias</span>
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/reports/new" className="w-full cursor-pointer">
-                    <AlertTriangle className="mr-2 h-4 w-4" />
-                    <span>Nova Denúncia</span>
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem
-                  className="cursor-pointer text-destructive focus:text-destructive"
-                  onClick={handleLogout}
-                >
-                  <LogOut className="mr-2 h-4 w-4" />
-                  <span>Sair</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <Link to="/reports" className="w-full cursor-pointer">
+                      <AlertTriangle className="mr-2 h-4 w-4" />
+                      <span>Minhas Denúncias</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/reports/new" className="w-full cursor-pointer">
+                      <AlertTriangle className="mr-2 h-4 w-4" />
+                      <span>Nova Denúncia</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    className="cursor-pointer text-destructive focus:text-destructive"
+                    onClick={handleLogout}
+                  >
+                    <LogOut className="mr-2 h-4 w-4" />
+                    <span>Sair</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
           ) : (
             <Button variant="default" size="sm" asChild>
               <Link to="/login">Entrar</Link>
@@ -209,21 +211,32 @@ export function Navbar() {
                   );
                 })}
                 
-                {isAuthenticated && (
-                  <>
-                    <div className="h-px bg-border my-2" />
-                    <Button
-                      variant="ghost"
-                      className="justify-start p-2 h-auto font-normal"
-                      onClick={() => {
-                        handleLogout();
-                        closeMobileMenu();
-                      }}
-                    >
-                      <LogOut className="w-4 h-4 mr-2" />
-                      Sair
-                    </Button>
-                  </>
+                <div className="h-px bg-border my-2" />
+                
+                {isAuthenticated ? (
+                  <Button
+                    variant="destructive"
+                    className="justify-start p-2 h-auto font-normal"
+                    onClick={() => {
+                      handleLogout();
+                      closeMobileMenu();
+                    }}
+                  >
+                    <LogOut className="w-4 h-4 mr-2" />
+                    Sair
+                  </Button>
+                ) : (
+                  <Button
+                    variant="default"
+                    className="justify-start p-2 h-auto font-normal"
+                    onClick={() => {
+                      navigate("/login");
+                      closeMobileMenu();
+                    }}
+                  >
+                    <User className="w-4 h-4 mr-2" />
+                    Entrar
+                  </Button>
                 )}
               </nav>
             </SheetContent>
