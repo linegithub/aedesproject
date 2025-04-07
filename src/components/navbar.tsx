@@ -104,7 +104,7 @@ export function Navbar() {
           <ThemeToggle />
           
           {isAuthenticated ? (
-            <>
+            <div className="flex items-center gap-2">
               <Button 
                 variant="outline" 
                 size="sm"
@@ -168,7 +168,7 @@ export function Navbar() {
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
-            </>
+            </div>
           ) : (
             <Button variant="default" size="sm" asChild>
               <Link to="/login">Entrar</Link>
