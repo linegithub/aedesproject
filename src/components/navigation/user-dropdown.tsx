@@ -10,7 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { AlertTriangle, LogOut, UserCircle } from "lucide-react";
+import { AlertTriangle, LogOut, User as UserIcon } from "lucide-react";
 
 interface UserDropdownProps {
   user: User | null;
@@ -27,7 +27,7 @@ export function UserDropdown({ user, onLogout }: UserDropdownProps) {
               <AvatarImage src={user.avatar} alt={user.name} />
             ) : (
               <AvatarFallback>
-                <UserCircle className="h-4 w-4" />
+                <UserIcon className="h-4 w-4" />
               </AvatarFallback>
             )}
           </Avatar>
@@ -40,7 +40,7 @@ export function UserDropdown({ user, onLogout }: UserDropdownProps) {
               <AvatarImage src={user.avatar} alt={user.name} />
             ) : (
               <AvatarFallback>
-                <UserCircle className="h-4 w-4" />
+                <UserIcon className="h-4 w-4" />
               </AvatarFallback>
             )}
           </Avatar>

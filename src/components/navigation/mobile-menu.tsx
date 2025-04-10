@@ -10,7 +10,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { AlertTriangle, LogOut, Menu, UserCircle } from "lucide-react";
+import { AlertTriangle, LogOut, Menu, User as UserIcon } from "lucide-react";
 import { useState } from "react";
 import { NavLinks } from "./nav-links";
 
@@ -55,7 +55,7 @@ export function MobileMenu({ isAuthenticated, user, onLogout }: MobileMenuProps)
                 <AvatarImage src={user.avatar} alt={user.name} />
               ) : (
                 <AvatarFallback>
-                  <UserCircle className="h-5 w-5" />
+                  <UserIcon className="h-5 w-5" />
                 </AvatarFallback>
               )}
             </Avatar>
