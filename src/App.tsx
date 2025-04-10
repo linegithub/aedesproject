@@ -14,6 +14,7 @@ import ReportsPage from "./pages/ReportsPage";
 import ReportDetailPage from "./pages/ReportDetailPage";
 import NewReportPage from "./pages/NewReportPage";
 import PublicDataPage from "./pages/PublicDataPage";
+import AboutUsPage from "./pages/AboutUsPage";
 
 const queryClient = new QueryClient();
 
@@ -33,6 +34,7 @@ const App = () => (
             <Route path="/reports/new" element={<NewReportPage />} />
             <Route path="/reports/:id" element={<ReportDetailPage />} />
             <Route path="/public-data" element={<PublicDataPage />} />
+            <Route path="/about" element={<AboutUsPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

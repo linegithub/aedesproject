@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -68,6 +69,11 @@ export function Navbar() {
       href: "/reports",
       icon: <AlertTriangle className="w-4 h-4 mr-2" />,
       requiresAuth: true,
+    },
+    {
+      name: "Sobre Nós",
+      href: "/about",
+      icon: <UsersRound className="w-4 h-4 mr-2" />,
     },
   ];
   
