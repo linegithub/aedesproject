@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Shield, Database } from "lucide-react";
+import { Shield, Database, UsersRound } from "lucide-react";
 
 export function Footer() {
   return (
@@ -25,6 +25,9 @@ export function Footer() {
               </Link>
               <Link to="/map" className="text-muted-foreground hover:text-foreground">
                 Mapa
+              </Link>
+              <Link to="/about" className="text-muted-foreground hover:text-foreground">
+                Sobre Nós
               </Link>
             </nav>
           </div>
