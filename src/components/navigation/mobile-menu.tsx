@@ -103,7 +103,7 @@ export function MobileMenu({ isAuthenticated, user, onLogout }: MobileMenuProps)
                 handleClose();
               }}
             >
-              <UserCircle className="w-4 h-4 mr-2" />
+              <UserIcon className="w-4 h-4 mr-2" />
               Entrar
             </Button>
           )}
