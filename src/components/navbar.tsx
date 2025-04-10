@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -27,7 +26,7 @@ import {
   MapPin,
   Menu,
   Shield,
-  User,
+  UserCircle,  // Updated import
   UsersRound,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
@@ -116,7 +115,7 @@ export function Navbar() {
                         <AvatarImage src={user.avatar} alt={user.name} />
                       ) : (
                         <AvatarFallback>
-                          <User className="h-4 w-4" />
+                          <UserCircle className="h-4 w-4" />
                         </AvatarFallback>
                       )}
                     </Avatar>
@@ -129,7 +128,7 @@ export function Navbar() {
                         <AvatarImage src={user.avatar} alt={user.name} />
                       ) : (
                         <AvatarFallback>
-                          <User className="h-4 w-4" />
+                          <UserCircle className="h-4 w-4" />
                         </AvatarFallback>
                       )}
                     </Avatar>
@@ -163,9 +162,9 @@ export function Navbar() {
               </DropdownMenu>
 
               <ThemeToggle />
-              
+            
               <Button 
-                variant="outline" 
+                variant="destructive" // Changed to use destructive variant for red color
                 size="sm"
                 onClick={handleLogout}
                 className="gap-1"
@@ -206,13 +205,13 @@ export function Navbar() {
                       <AvatarImage src={user.avatar} alt={user.name} />
                     ) : (
                       <AvatarFallback>
-                        <User className="h-5 w-5" />
+                        <UserCircle className="h-5 w-5" />
                       </AvatarFallback>
                     )}
                   </Avatar>
                   <div className="flex flex-col">
                     <span className="font-medium">{user?.name}</span>
-                    <span className="text-xs text-muted-foreground">{user?.email}</span>
+                    <span className="text-xs text-muted-foreground">{user?.email}</span
                   </div>
                 </div>
               )}
@@ -269,7 +268,7 @@ export function Navbar() {
                       closeMobileMenu();
                     }}
                   >
-                    <User className="w-4 h-4 mr-2" />
+                    <UserCircle className="w-4 h-4 mr-2" />
                     Entrar
                   </Button>
                 )}
