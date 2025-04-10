@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -211,7 +212,7 @@ export function Navbar() {
                   </Avatar>
                   <div className="flex flex-col">
                     <span className="font-medium">{user?.name}</span>
-                    <span className="text-xs text-muted-foreground">{user?.email}</span
+                    <span className="text-xs text-muted-foreground">{user?.email}</span>
                   </div>
                 </div>
               )}
@@ -280,3 +281,4 @@ export function Navbar() {
     </header>
   );
 }
+
