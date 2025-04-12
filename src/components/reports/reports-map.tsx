@@ -13,8 +13,9 @@ import "leaflet/dist/leaflet.css";
 import icon from "leaflet/dist/images/marker-icon.png";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
 
-// Set up the default icon for Leaflet
-const defaultIcon = new L.Icon({
+// Create default icon for Leaflet
+const DefaultIcon = L.Icon.extend({});
+const defaultIcon = new DefaultIcon({
   iconUrl: icon,
   shadowUrl: iconShadow,
   iconSize: [25, 41],
