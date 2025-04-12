@@ -10,20 +10,17 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
 // Fix Leaflet icons that don't work correctly in React
-// This is a known solution for the Leaflet icon problem
 import icon from "leaflet/dist/images/marker-icon.png";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
 
-// Initialize default icon once outside of component
-const DefaultIcon = L.icon({
+// Define the default icon globally only once
+let DefaultIcon = L.icon({
   iconUrl: icon,
   shadowUrl: iconShadow,
   iconSize: [25, 41],
   iconAnchor: [12, 41],
   popupAnchor: [1, -34],
 });
-
-L.Marker.prototype.options.icon = DefaultIcon;
 
 // Component to center the map when data changes
 function MapUpdater({ reports }: { reports: MosquitoReport[] }) {
@@ -210,3 +207,4 @@ export function ReportsMap() {
     </Card>
   );
 }
+

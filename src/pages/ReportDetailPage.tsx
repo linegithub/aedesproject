@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { format } from "date-fns";
@@ -32,17 +31,14 @@ import "leaflet/dist/leaflet.css";
 import icon from "leaflet/dist/images/marker-icon.png";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
 
-// Initialize default icon once outside of component
-const DefaultIcon = L.icon({
+// Initialize default icon
+let DefaultIcon = L.icon({
   iconUrl: icon,
   shadowUrl: iconShadow,
   iconSize: [25, 41],
   iconAnchor: [12, 41],
   popupAnchor: [1, -34],
 });
-
-// Set default icon for all markers
-L.Marker.prototype.options.icon = DefaultIcon;
 
 const ReportDetailPage = () => {
   const { id } = useParams<{ id: string }>();
