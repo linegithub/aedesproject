@@ -33,14 +33,16 @@ import icon from "leaflet/dist/images/marker-icon.png";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
 
 // Initialize default icon
-const DefaultIcon = L.Icon.extend({});
-const defaultIcon = new DefaultIcon({
+const defaultIcon = new L.Icon({
   iconUrl: icon,
   shadowUrl: iconShadow,
   iconSize: [25, 41],
   iconAnchor: [12, 41],
   popupAnchor: [1, -34],
 });
+
+// Ensure Leaflet uses our icon by default
+L.Marker.prototype.options.icon = defaultIcon;
 
 const ReportDetailPage = () => {
   const { id } = useParams<{ id: string }>();
