@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { format } from "date-fns";
@@ -23,22 +24,6 @@ import {
 } from "lucide-react";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import L from "leaflet";
-import "leaflet/dist/leaflet.css";
-
-// Import Leaflet icons to fix the missing icon issue
-import icon from "leaflet/dist/images/marker-icon.png";
-import iconShadow from "leaflet/dist/images/marker-shadow.png";
-
-// Initialize default icon
-const defaultIcon = L.icon({
-  iconUrl: icon,
-  shadowUrl: iconShadow,
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-});
 
 const ReportDetailPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -97,50 +82,13 @@ const ReportDetailPage = () => {
     }
   };
 
-  // Create a custom icon based on status
-  const getMarkerIcon = (status: string) => {
-    let color = "";
-    
+  const getStatusColor = (status: string) => {
     switch (status) {
-      case "pending":
-        color = "#f59e0b"; // amber-500
-        break;
-      case "verified":
-        color = "#3b82f6"; // blue-500
-        break;
-      case "eliminated":
-        color = "#22c55e"; // green-500
-        break;
-      default:
-        color = "#f59e0b"; // amber-500
+      case "pending": return "bg-amber-500";
+      case "verified": return "bg-blue-500";
+      case "eliminated": return "bg-green-500";
+      default: return "bg-amber-500";
     }
-    
-    return L.divIcon({
-      className: "custom-div-icon",
-      html: `
-        <div style="
-          background-color: ${color};
-          width: 30px;
-          height: 30px;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          border-radius: 100%;
-          border: 3px solid white;
-          box-shadow: 0 0 8px rgba(0,0,0,0.3);
-        ">
-          <div style="
-            width: 10px;
-            height: 10px;
-            background-color: white;
-            border-radius: 100%;
-          "></div>
-        </div>
-      `,
-      iconSize: [30, 30],
-      iconAnchor: [15, 15],
-      popupAnchor: [0, -15]
-    });
   };
   
   return (
@@ -213,30 +161,20 @@ const ReportDetailPage = () => {
               </CardHeader>
               <CardContent className="p-0">
                 <div className="aspect-video w-full relative overflow-hidden">
-                  <MapContainer
-                    center={[report.location.lat, report.location.lng]}
-                    zoom={15}
-                    scrollWheelZoom={false}
-                    style={{ height: "100%", width: "100%" }}
-                  >
-                    <TileLayer
-                      attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    />
-                    <Marker 
-                      position={[report.location.lat, report.location.lng]}
-                      icon={getMarkerIcon(report.status)}
+                  {/* Simple Map implementation */}
+                  <div className="w-full h-full bg-[url('https://via.placeholder.com/1200x800/e5e7eb/a3a3a3?text=Mapa+de+Localização')] bg-cover bg-center relative">
+                    <div className="absolute"
+                      style={{
+                        left: `${((report.location.lng + 180) / 360) * 100}%`, 
+                        top: `${((90 - report.location.lat) / 180) * 100}%`,
+                        transform: 'translate(-50%, -50%)'
+                      }}
                     >
-                      <Popup>
-                        <div className="p-1">
-                          <h3 className="font-medium">{report.description}</h3>
-                          <p className="text-sm text-muted-foreground">
-                            {report.location.address}
-                          </p>
-                        </div>
-                      </Popup>
-                    </Marker>
-                  </MapContainer>
+                      <div className={`w-8 h-8 rounded-full border-3 border-white shadow-lg flex items-center justify-center ${getStatusColor(report.status)}`}>
+                        <div className="w-3 h-3 bg-white rounded-full"></div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </CardContent>
               <CardFooter className="text-sm text-muted-foreground">
