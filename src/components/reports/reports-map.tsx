@@ -22,9 +22,6 @@ const defaultIcon = new L.Icon({
   popupAnchor: [1, -34],
 });
 
-// Set default icon for all markers
-L.Marker.prototype.options.icon = defaultIcon;
-
 // Component to center the map when data changes
 function MapUpdater({ reports }: { reports: MosquitoReport[] }) {
   const map = useMap();

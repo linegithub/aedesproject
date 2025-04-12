@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { format } from "date-fns";
@@ -39,9 +40,6 @@ const defaultIcon = new L.Icon({
   iconAnchor: [12, 41],
   popupAnchor: [1, -34],
 });
-
-// Set default icon for all markers
-L.Marker.prototype.options.icon = defaultIcon;
 
 const ReportDetailPage = () => {
   const { id } = useParams<{ id: string }>();
