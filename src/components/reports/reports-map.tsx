@@ -5,17 +5,104 @@ import { toast } from "sonner";
 import { MosquitoReport, getAllReports, subscribe } from "@/services/report-service";
 import { Card } from "@/components/ui/card";
 import { MapPin, RefreshCw } from "lucide-react";
+import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
 
-// Simpler map implementation without Leaflet
+// Corrigir ícones do Leaflet que normalmente não funcionam corretamente no React
+// Isso é uma solução conhecida para o problema de ícones no Leaflet
+import icon from "leaflet/dist/images/marker-icon.png";
+import iconShadow from "leaflet/dist/images/marker-shadow.png";
+
+let DefaultIcon = L.icon({
+  iconUrl: icon,
+  shadowUrl: iconShadow,
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+});
+
+L.Marker.prototype.options.icon = DefaultIcon;
+
+// Componente para centralizar o mapa quando os dados mudarem
+function MapUpdater({ reports }: { reports: MosquitoReport[] }) {
+  const map = useMap();
+  
+  useEffect(() => {
+    if (reports.length > 0) {
+      // Calcular limites para encaixar todos os marcadores
+      const bounds = new L.LatLngBounds(
+        reports.map(report => [
+          report.location.lat,
+          report.location.lng
+        ]) as [number, number][]
+      );
+      
+      map.fitBounds(bounds, { padding: [50, 50] });
+    } else {
+      // Se não houver marcadores, centralizar no Brasil
+      map.setView([-15.77972, -47.92972], 4);
+    }
+  }, [reports, map]);
+  
+  return null;
+}
+
+// Gerar ícones coloridos com base no status do relatório
+function getMarkerIcon(status: string) {
+  let color = "";
+  
+  switch (status) {
+    case "pending":
+      color = "#f59e0b"; // amber-500
+      break;
+    case "verified":
+      color = "#3b82f6"; // blue-500
+      break;
+    case "eliminated":
+      color = "#22c55e"; // green-500
+      break;
+    default:
+      color = "#f59e0b"; // amber-500
+  }
+  
+  return L.divIcon({
+    className: "custom-div-icon",
+    html: `
+      <div style="
+        background-color: ${color};
+        width: 24px;
+        height: 24px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 100%;
+        border: 2px solid white;
+        box-shadow: 0 0 5px rgba(0,0,0,0.3);
+      ">
+        <div style="
+          width: 8px;
+          height: 8px;
+          background-color: white;
+          border-radius: 100%;
+        "></div>
+      </div>
+    `,
+    iconSize: [24, 24],
+    iconAnchor: [12, 12],
+    popupAnchor: [0, -12]
+  });
+}
+
 export function ReportsMap() {
   const [reports, setReports] = useState<MosquitoReport[]>([]);
   const navigate = useNavigate();
   
   useEffect(() => {
-    // Load initial reports
+    // Carregar denúncias iniciais
     setReports(getAllReports());
     
-    // Subscribe to changes in reports
+    // Assinar mudanças nas denúncias
     const unsubscribe = subscribe(() => {
       setReports(getAllReports());
     });
@@ -28,15 +115,6 @@ export function ReportsMap() {
     toast.success("Mapa atualizado");
   };
   
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "pending": return "bg-amber-500";
-      case "verified": return "bg-blue-500";
-      case "eliminated": return "bg-green-500";
-      default: return "bg-amber-500";
-    }
-  };
-  
   const getStatusText = (status: string) => {
     switch (status) {
       case "pending": return "Pendente";
@@ -47,55 +125,58 @@ export function ReportsMap() {
   };
   
   return (
-    <Card className="w-full h-[70vh] p-4 overflow-hidden shadow-lg relative flex flex-col">
-      <div className="flex justify-end mb-2">
-        <button 
-          className="bg-background hover:bg-background/80 p-2 rounded-full shadow-md z-10"
-          onClick={handleRefreshMap}
-          aria-label="Atualizar mapa"
-        >
-          <RefreshCw className="h-4 w-4" />
-        </button>
-      </div>
+    <Card className="w-full h-[70vh] p-0 overflow-hidden shadow-lg relative">
+      <MapContainer 
+        className="w-full h-full z-0"
+        center={[-15.77972, -47.92972]} 
+        zoom={4} 
+        scrollWheelZoom={false}
+        style={{ zIndex: 0 }}
+      >
+        <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+        
+        {reports.map((report) => (
+          <Marker
+            key={report.id}
+            position={[report.location.lat, report.location.lng]}
+            icon={getMarkerIcon(report.status)}
+            eventHandlers={{
+              click: () => {
+                navigate(`/reports/${report.id}`);
+              }
+            }}
+          >
+            <Popup>
+              <div className="p-1">
+                <h3 className="font-medium">{report.description}</h3>
+                <p className="text-sm text-muted-foreground">
+                  {report.location.address}
+                </p>
+                <p className="text-xs mt-1">
+                  Status: <span className="font-medium">{getStatusText(report.status)}</span>
+                </p>
+              </div>
+            </Popup>
+          </Marker>
+        ))}
+        
+        <MapUpdater reports={reports} />
+      </MapContainer>
       
-      {/* Map visualization */}
-      <div className="flex-1 relative bg-gray-100 rounded-md overflow-hidden">
-        {reports.length > 0 ? (
-          <div className="absolute inset-0">
-            {/* Simple Map implementation */}
-            <div className="relative w-full h-full bg-[url('https://via.placeholder.com/1200x800/e5e7eb/a3a3a3?text=Mapa+do+Brasil')] bg-cover bg-center">
-              {reports.map((report) => (
-                <div
-                  key={report.id}
-                  className="absolute cursor-pointer transform -translate-x-1/2 -translate-y-1/2 z-10"
-                  style={{
-                    left: `${((report.location.lng + 180) / 360) * 100}%`, 
-                    top: `${((90 - report.location.lat) / 180) * 100}%`
-                  }}
-                  onClick={() => navigate(`/reports/${report.id}`)}
-                >
-                  <div className={`w-6 h-6 rounded-full border-2 border-white shadow-md flex items-center justify-center ${getStatusColor(report.status)}`}>
-                    <div className="w-2 h-2 bg-white rounded-full"></div>
-                  </div>
-                  <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-1 bg-white px-2 py-1 rounded text-xs shadow whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">
-                    {report.description}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        ) : (
-          <div className="absolute inset-0 flex flex-col items-center justify-center bg-background/50 z-10">
-            <div className="text-muted-foreground flex items-center">
-              <MapPin className="mr-2 h-5 w-5" />
-              Não há denúncias registradas ainda
-            </div>
-          </div>
-        )}
-      </div>
+      {/* Botão de atualização */}
+      <button 
+        className="absolute top-2 right-2 bg-background/80 hover:bg-background p-2 rounded-full shadow-md z-[500]"
+        onClick={handleRefreshMap}
+        aria-label="Atualizar mapa"
+      >
+        <RefreshCw className="h-4 w-4" />
+      </button>
       
-      {/* Legend */}
-      <div className="absolute bottom-2 left-2 bg-background/90 p-2 rounded shadow-md z-20 text-xs">
+      {/* Legenda */}
+      <div className="absolute bottom-2 left-2 bg-background/90 p-2 rounded shadow-md z-[500] text-xs">
         <div className="font-medium mb-1">Legenda:</div>
         <div className="flex items-center mb-1">
           <span className="h-3 w-3 rounded-full bg-amber-500 mr-1"></span>
@@ -110,6 +191,16 @@ export function ReportsMap() {
           <span>Eliminado</span>
         </div>
       </div>
+      
+      {/* Mensagem de carregamento/sem dados */}
+      {reports.length === 0 && (
+        <div className="absolute inset-0 flex flex-col items-center justify-center bg-background/50 z-[400]">
+          <div className="text-muted-foreground flex items-center">
+            <MapPin className="mr-2 h-5 w-5" />
+            Não há denúncias registradas ainda
+          </div>
+        </div>
+      )}
     </Card>
   );
 }
