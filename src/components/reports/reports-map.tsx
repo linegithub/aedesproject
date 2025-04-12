@@ -13,14 +13,17 @@ import "leaflet/dist/leaflet.css";
 import icon from "leaflet/dist/images/marker-icon.png";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
 
-// Define the default icon globally only once
-let DefaultIcon = L.icon({
+// Set up the default icon for Leaflet
+const defaultIcon = new L.Icon({
   iconUrl: icon,
   shadowUrl: iconShadow,
   iconSize: [25, 41],
   iconAnchor: [12, 41],
   popupAnchor: [1, -34],
 });
+
+// Set default icon for all markers
+L.Marker.prototype.options.icon = defaultIcon;
 
 // Component to center the map when data changes
 function MapUpdater({ reports }: { reports: MosquitoReport[] }) {
