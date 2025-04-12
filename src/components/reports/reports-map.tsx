@@ -9,12 +9,13 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
-// Corrigir ícones do Leaflet que normalmente não funcionam corretamente no React
-// Isso é uma solução conhecida para o problema de ícones no Leaflet
+// Fix Leaflet icons that don't work correctly in React
+// This is a known solution for the Leaflet icon problem
 import icon from "leaflet/dist/images/marker-icon.png";
 import iconShadow from "leaflet/dist/images/marker-shadow.png";
 
-let DefaultIcon = L.icon({
+// Initialize default icon once outside of component
+const DefaultIcon = L.icon({
   iconUrl: icon,
   shadowUrl: iconShadow,
   iconSize: [25, 41],
@@ -24,23 +25,28 @@ let DefaultIcon = L.icon({
 
 L.Marker.prototype.options.icon = DefaultIcon;
 
-// Componente para centralizar o mapa quando os dados mudarem
+// Component to center the map when data changes
 function MapUpdater({ reports }: { reports: MosquitoReport[] }) {
   const map = useMap();
   
   useEffect(() => {
     if (reports.length > 0) {
-      // Calcular limites para encaixar todos os marcadores
-      const bounds = new L.LatLngBounds(
-        reports.map(report => [
-          report.location.lat,
-          report.location.lng
-        ]) as [number, number][]
-      );
-      
-      map.fitBounds(bounds, { padding: [50, 50] });
+      try {
+        // Calculate bounds to fit all markers
+        const bounds = L.latLngBounds(
+          reports.map(report => [
+            report.location.lat,
+            report.location.lng
+          ]) as [number, number][]
+        );
+        
+        map.fitBounds(bounds, { padding: [50, 50] });
+      } catch (error) {
+        // Fallback if there's an issue with bounds
+        map.setView([-15.77972, -47.92972], 4);
+      }
     } else {
-      // Se não houver marcadores, centralizar no Brasil
+      // If there are no markers, center on Brazil
       map.setView([-15.77972, -47.92972], 4);
     }
   }, [reports, map]);
@@ -48,7 +54,7 @@ function MapUpdater({ reports }: { reports: MosquitoReport[] }) {
   return null;
 }
 
-// Gerar ícones coloridos com base no status do relatório
+// Generate colored icons based on report status
 function getMarkerIcon(status: string) {
   let color = "";
   
@@ -99,10 +105,10 @@ export function ReportsMap() {
   const navigate = useNavigate();
   
   useEffect(() => {
-    // Carregar denúncias iniciais
+    // Load initial reports
     setReports(getAllReports());
     
-    // Assinar mudanças nas denúncias
+    // Subscribe to changes in reports
     const unsubscribe = subscribe(() => {
       setReports(getAllReports());
     });
@@ -166,7 +172,7 @@ export function ReportsMap() {
         <MapUpdater reports={reports} />
       </MapContainer>
       
-      {/* Botão de atualização */}
+      {/* Refresh button */}
       <button 
         className="absolute top-2 right-2 bg-background/80 hover:bg-background p-2 rounded-full shadow-md z-[500]"
         onClick={handleRefreshMap}
@@ -175,7 +181,7 @@ export function ReportsMap() {
         <RefreshCw className="h-4 w-4" />
       </button>
       
-      {/* Legenda */}
+      {/* Legend */}
       <div className="absolute bottom-2 left-2 bg-background/90 p-2 rounded shadow-md z-[500] text-xs">
         <div className="font-medium mb-1">Legenda:</div>
         <div className="flex items-center mb-1">
@@ -192,7 +198,7 @@ export function ReportsMap() {
         </div>
       </div>
       
-      {/* Mensagem de carregamento/sem dados */}
+      {/* Loading/empty state message */}
       {reports.length === 0 && (
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-background/50 z-[400]">
           <div className="text-muted-foreground flex items-center">

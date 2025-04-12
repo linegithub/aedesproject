@@ -26,6 +26,23 @@ import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+
+// Import Leaflet icons to fix the missing icon issue
+import icon from "leaflet/dist/images/marker-icon.png";
+import iconShadow from "leaflet/dist/images/marker-shadow.png";
+
+// Initialize default icon once outside of component
+const DefaultIcon = L.icon({
+  iconUrl: icon,
+  shadowUrl: iconShadow,
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+});
+
+// Set default icon for all markers
+L.Marker.prototype.options.icon = DefaultIcon;
 
 const ReportDetailPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -84,7 +101,7 @@ const ReportDetailPage = () => {
     }
   };
 
-  // Criar um ícone personalizado baseado no status
+  // Create a custom icon based on status
   const getMarkerIcon = (status: string) => {
     let color = "";
     
