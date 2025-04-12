@@ -24,8 +24,6 @@ import {
 } from "lucide-react";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import L from "leaflet";
 
 const ReportDetailPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -82,52 +80,6 @@ const ReportDetailPage = () => {
       case "eliminated":
         return <Badge className="bg-green-500 text-white">Eliminado</Badge>;
     }
-  };
-
-  // Criar um ícone personalizado baseado no status
-  const getMarkerIcon = (status: string) => {
-    let color = "";
-    
-    switch (status) {
-      case "pending":
-        color = "#f59e0b"; // amber-500
-        break;
-      case "verified":
-        color = "#3b82f6"; // blue-500
-        break;
-      case "eliminated":
-        color = "#22c55e"; // green-500
-        break;
-      default:
-        color = "#f59e0b"; // amber-500
-    }
-    
-    return L.divIcon({
-      className: "custom-div-icon",
-      html: `
-        <div style="
-          background-color: ${color};
-          width: 30px;
-          height: 30px;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          border-radius: 100%;
-          border: 3px solid white;
-          box-shadow: 0 0 8px rgba(0,0,0,0.3);
-        ">
-          <div style="
-            width: 10px;
-            height: 10px;
-            background-color: white;
-            border-radius: 100%;
-          "></div>
-        </div>
-      `,
-      iconSize: [30, 30],
-      iconAnchor: [15, 15],
-      popupAnchor: [0, -15]
-    });
   };
   
   return (
@@ -199,38 +151,27 @@ const ReportDetailPage = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent className="p-0">
-                <div className="aspect-video w-full relative overflow-hidden">
-                  <MapContainer
-                    center={[report.location.lat, report.location.lng]}
-                    zoom={15}
-                    scrollWheelZoom={false}
-                    style={{ height: "100%", width: "100%" }}
-                  >
-                    <TileLayer
-                      attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    />
-                    <Marker 
-                      position={[report.location.lat, report.location.lng]}
-                      icon={getMarkerIcon(report.status)}
-                    >
-                      <Popup>
-                        <div className="p-1">
-                          <h3 className="font-medium">{report.description}</h3>
-                          <p className="text-sm text-muted-foreground">
-                            {report.location.address}
-                          </p>
-                        </div>
-                      </Popup>
-                    </Marker>
-                  </MapContainer>
+                <div
+                  className="aspect-video w-full relative"
+                  style={{
+                    background: "url('https://via.placeholder.com/800x450/E2F0E2/40C840?text=Mapa') center/cover",
+                  }}
+                >
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="text-primary animate-pulse">
+                      <MapPin className="h-8 w-8" />
+                    </div>
+                  </div>
+                  <div className="absolute bottom-4 left-4 bg-background/90 p-2 rounded text-sm">
+                    {report.location?.address || "Endereço não disponível"}
+                  </div>
                 </div>
               </CardContent>
               <CardFooter className="text-sm text-muted-foreground">
                 <div className="flex items-center space-x-2">
                   <MapPin className="h-4 w-4" />
                   <span>
-                    Coordenadas: {report.location.lat.toFixed(6)}, {report.location.lng.toFixed(6)}
+                    Coordenadas: {report.location?.lat.toFixed(6) || "N/A"}, {report.location?.lng.toFixed(6) || "N/A"}
                   </span>
                 </div>
               </CardFooter>
