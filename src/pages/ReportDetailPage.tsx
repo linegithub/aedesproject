@@ -81,6 +81,15 @@ const ReportDetailPage = () => {
         return <Badge className="bg-green-500 text-white">Eliminado</Badge>;
     }
   };
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "pending": return "bg-amber-500";
+      case "verified": return "bg-blue-500";
+      case "eliminated": return "bg-green-500";
+      default: return "bg-amber-500";
+    }
+  };
   
   return (
     <div className="flex flex-col min-h-screen">
@@ -151,19 +160,20 @@ const ReportDetailPage = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent className="p-0">
-                <div
-                  className="aspect-video w-full relative"
-                  style={{
-                    background: "url('https://via.placeholder.com/800x450/E2F0E2/40C840?text=Mapa') center/cover",
-                  }}
-                >
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-primary animate-pulse">
-                      <MapPin className="h-8 w-8" />
+                <div className="aspect-video w-full relative overflow-hidden">
+                  {/* Simple Map implementation */}
+                  <div className="w-full h-full bg-[url('https://via.placeholder.com/1200x800/e5e7eb/a3a3a3?text=Mapa+de+Localização')] bg-cover bg-center relative">
+                    <div className="absolute"
+                      style={{
+                        left: `${((report.location.lng + 180) / 360) * 100}%`, 
+                        top: `${((90 - report.location.lat) / 180) * 100}%`,
+                        transform: 'translate(-50%, -50%)'
+                      }}
+                    >
+                      <div className={`w-8 h-8 rounded-full border-3 border-white shadow-lg flex items-center justify-center ${getStatusColor(report.status)}`}>
+                        <div className="w-3 h-3 bg-white rounded-full"></div>
+                      </div>
                     </div>
-                  </div>
-                  <div className="absolute bottom-4 left-4 bg-background/90 p-2 rounded text-sm">
-                    {report.location?.address || "Endereço não disponível"}
                   </div>
                 </div>
               </CardContent>
@@ -171,7 +181,7 @@ const ReportDetailPage = () => {
                 <div className="flex items-center space-x-2">
                   <MapPin className="h-4 w-4" />
                   <span>
-                    Coordenadas: {report.location?.lat.toFixed(6) || "N/A"}, {report.location?.lng.toFixed(6) || "N/A"}
+                    Coordenadas: {report.location.lat.toFixed(6)}, {report.location.lng.toFixed(6)}
                   </span>
                 </div>
               </CardFooter>
